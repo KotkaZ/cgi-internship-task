@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cgi_intern_web_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
