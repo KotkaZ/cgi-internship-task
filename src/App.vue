@@ -11,6 +11,10 @@ import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import "primeflex/primeflex.css";
+
+import { Vue } from "vue-class-component";
+
+export default class App extends Vue {}
 </script>
 
 <style lang="scss">
@@ -33,5 +37,27 @@ import "primeflex/primeflex.css";
       color: #42b983;
     }
   }
+}
+body {
+  background: rgb(255, 68, 0);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(255, 68, 0, 1) 0%,
+    rgba(255, 161, 37, 1) 50%,
+    rgba(254, 255, 0, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(255, 68, 0, 1) 0%,
+    rgba(255, 161, 37, 1) 50%,
+    rgba(254, 255, 0, 1) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(255, 68, 0, 1) 0%,
+    rgba(255, 161, 37, 1) 50%,
+    rgba(254, 255, 0, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff4400",endColorstr="#feff00",GradientType=1);
 }
 </style>
