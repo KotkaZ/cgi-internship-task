@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
-    <DaytimeView :solarEvent="solarEvent" class="p-mb-3" />
-    <InputFields @calculate="save" />
+  <div class="home p-grid p-nogutter p-jc-center">
+    <DaytimeView :solarEvent="solarEvent" class="p-mb-3 p-col-12 p-xl-8" />
+    <InputFields @calculate="save" class="p-col-12 p-xl-8" />
   </div>
 </template>
 
