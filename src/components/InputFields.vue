@@ -197,11 +197,11 @@ export default class InputFields extends Vue {
     if (this.date && this.latitude && this.longitude)
       this.$emit(
         "calculate",
-        Number(this.longitude),
         Number(this.latitude),
+        Number(this.longitude),
         this.date,
         this.enddate,
-        this.selectedTimezone
+        Number(this.selectedTimezone.code)
       );
   }
 
