@@ -134,6 +134,14 @@ import L, { LeafletMouseEvent, Map, Marker } from "leaflet";
       this.date = val;
       this.calculate();
     },
+    enddate: function (val) {
+      this.enddate = val;
+      this.calculate();
+    },
+    selectedTimezone: function (val) {
+      this.selectedTimezone = val;
+      this.calculate();
+    },
   },
 })
 export default class InputFields extends Vue {
@@ -141,7 +149,6 @@ export default class InputFields extends Vue {
   public latitude = 58.36514538336391;
   public date = new Date();
   public enddate = new Date();
-  public rangeChecked = false;
   private map!: Map;
   private marker!: Marker;
 
