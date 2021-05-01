@@ -130,4 +130,8 @@ export default class SolarEvent {
   public get getSunset(): number {
     return this.sunset;
   }
+
+  public get getDate(): Date {
+    return this.date;
+  }
 }
