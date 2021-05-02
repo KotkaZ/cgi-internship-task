@@ -1,6 +1,10 @@
 <template>
   <div class="home p-grid p-nogutter p-jc-center">
-    <DaytimeView :solarEvent="solarEvent" class="p-mb-3 p-col-12 p-xl-8" />
+    <DaytimeView
+      :solarEvents="solarEvents"
+      :timezone="timezone"
+      class="p-mb-3 p-col-12 p-xl-8"
+    />
     <InputFields @calculate="save" class="p-col-12 p-xl-8" />
   </div>
 </template>
@@ -18,10 +22,30 @@ import InputFields from "@/components/InputFields.vue"; // @ is an alias to /src
   },
 })
 export default class Home extends Vue {
-  public solarEvent: SolarEvent = new SolarEvent(0.0, 0.0, new Date());
+  public solarEvents: Array<SolarEvent> = [new SolarEvent(0, 0, new Date())];
+  public timezone = 0;
 
-  public save(latitude: number, longitude: number, date: Date): void {
-    this.solarEvent = new SolarEvent(latitude, longitude, date);
+  /**
+   * Saves solarEvents from inputFields emit.
+   */
+  public save(
+    latitude: number,
+    longitude: number,
+    date: Date,
+    enddate: Date,
+    timeoffset: number
+  ): void {
+    this.timezone = timeoffset;
+    this.solarEvents = [new SolarEvent(latitude, longitude, new Date(date))];
+
+    if (enddate) {
+      let copyDate = new Date(date);
+      while (enddate.valueOf() - copyDate.valueOf() > 0) {
+        copyDate.setDate(copyDate.getDate() + 1);
+        const newDate = new Date(copyDate);
+        this.solarEvents.push(new SolarEvent(latitude, longitude, newDate));
+      }
+    }
   }
 }
 </script>
