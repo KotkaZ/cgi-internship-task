@@ -106,8 +106,8 @@ export default class DaytimeView extends Vue {
   public graphData(solarEvents: Array<SolarEvent>): GraphData {
     const graphData = new GraphData();
     const daylightDataset = new DataSet("Daylight", true, "#000000", false);
-    const sunriseDataset = new DataSet("Sunrise", false, "#ff4400", true);
-    const sunsetDataset = new DataSet("Sunset", false, "#000c5c", true);
+    const sunriseDataset = new DataSet("Sunrise UTC+0", false, "#ff4400", true);
+    const sunsetDataset = new DataSet("Sunset UTC+0", false, "#000c5c", true);
 
     for (const solarEvent of solarEvents) {
       graphData.labels.push(
