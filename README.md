@@ -8,6 +8,7 @@ Calculator implements sunrise and sunset equations from NOAA:
 These formulas use strong approximations, therefore calculations may be off a little.
 Users can enter coordinates manually or select a location from the map.
 In advanced view, there is the possibility to change Timezone and show daylight interval between dates.
+When choosing the interval, then an interactive chart is displayed. Graph datasets can be hidden according to the user's needs.
 
 ## Tested compatability
 

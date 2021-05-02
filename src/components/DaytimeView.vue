@@ -105,7 +105,9 @@ export default class DaytimeView extends Vue {
    */
   public graphData(solarEvents: Array<SolarEvent>): GraphData {
     const graphData = new GraphData();
-    const dataSet = new DataSet("Daylight length", true, "#ff4400");
+    const daylightDataset = new DataSet("Daylight", true, "#000000", false);
+    const sunriseDataset = new DataSet("Sunrise", false, "#ff4400", true);
+    const sunsetDataset = new DataSet("Sunset", false, "#000c5c", true);
 
     for (const solarEvent of solarEvents) {
       graphData.labels.push(
@@ -114,10 +116,14 @@ export default class DaytimeView extends Vue {
           (solarEvent.getDate.getMonth() + 1)
         ).slice(-2)}`
       );
-      dataSet.data.push(solarEvent.getDaylight);
+      daylightDataset.data.push(solarEvent.getDaylight);
+      sunriseDataset.data.push(solarEvent.getSunrise);
+      sunsetDataset.data.push(solarEvent.getSunset);
     }
 
-    graphData.datasets.push(dataSet);
+    graphData.datasets.push(daylightDataset);
+    graphData.datasets.push(sunriseDataset);
+    graphData.datasets.push(sunsetDataset);
 
     return graphData;
   }
