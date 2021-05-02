@@ -1,36 +1,37 @@
 <template>
   <Card>
-    <template #title> Daytime View </template>
+    <template #title> Sunrise/Sunset Calculator </template>
     <template #content>
-      <h3>
+      <h3 id="disclaimer">
         Disclaimer! This app uses sun angle estimations, therefore it may be off
         ±5 minutes.
       </h3>
 
       <div class="p-grid p-jc-evenly">
-        <Card class="p-md-2 p-col-12">
+        <Card id="sunrise_card" class="p-md-2 p-col-12 p-shadow-14">
           <template #title> Sunrise </template>
           <template #content>
-            {{ displayTime(solarEvents[0].getSunrise + timezone) }}
+            <h3>{{ displayTime(solarEvents[0].getSunrise + timezone) }}</h3>
           </template>
         </Card>
-        <Card class="p-md-2 p-col-12">
+        <Card id="sunset_card" class="p-md-2 p-col-12 p-shadow-14">
           <template #title> Sunset </template>
           <template #content>
-            {{ displayTime(solarEvents[0].getSunset + timezone) }}
+            <h3>{{ displayTime(solarEvents[0].getSunset + timezone) }}</h3>
           </template>
         </Card>
-        <Card class="p-md-2 p-col-12">
+        <Card id="daylight_card" class="p-md-2 p-col-12 p-shadow-14">
           <template #title> Daylight </template>
           <template #content>
-            {{ displayHours(solarEvents[0].getDaylight) }}
+            <h3>{{ displayHours(solarEvents[0].getDaylight) }}</h3>
           </template>
         </Card>
       </div>
     </template>
 
-    <template #footer>
+    <template #footer class="p-grid">
       <Chart
+        class="p-md-8 p-col-12 p-m-auto p-shadow-14"
         v-if="solarEvents.length > 1"
         type="line"
         :data="graphData(solarEvents)"
@@ -92,7 +93,7 @@ export default class DaytimeView extends Vue {
    */
   public graphData(solarEvents: Array<SolarEvent>): GraphData {
     const graphData = new GraphData();
-    const dataSet = new DataSet("Daylight length", true, "#FFA726");
+    const dataSet = new DataSet("Daylight length", true, "#ff4400");
 
     for (const solarEvent of solarEvents) {
       graphData.labels.push(
@@ -112,7 +113,17 @@ export default class DaytimeView extends Vue {
 </script>
 
 <style scoped>
-h3 {
+#disclaimer {
   color: red;
+}
+
+#sunrise_card {
+  background-color: #ff4400;
+  color: #f4f5e5;
+}
+
+#sunset_card {
+  background-color: #000c5c;
+  color: #f4f5e5;
 }
 </style>
