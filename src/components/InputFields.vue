@@ -99,6 +99,10 @@
 </template>
 
 <script lang="ts">
+// TS Models
+import Timezone from "@/models/Timezone";
+
+// UI Components
 import Card from "primevue/card";
 import Fieldset from "primevue/fieldset";
 import InputText from "primevue/inputtext";
@@ -107,6 +111,7 @@ import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import { Options, Vue } from "vue-class-component";
 
+// Map components
 import "leaflet/dist/leaflet.css";
 import L, { LeafletMouseEvent, Map, Marker } from "leaflet";
 
@@ -119,11 +124,12 @@ import L, { LeafletMouseEvent, Map, Marker } from "leaflet";
     Fieldset,
     Dropdown,
   },
+  // For realtime view and calculations we use watchers
   watch: {
     longitude: function (val) {
       this.longitude = val;
-      this.updateMap();
-      this.calculate();
+      this.updateMap(); // Updates marker location
+      this.calculate(); // Recalculates the time
     },
     latitude: function (val) {
       this.latitude = val;
@@ -145,6 +151,7 @@ import L, { LeafletMouseEvent, Map, Marker } from "leaflet";
   },
 })
 export default class InputFields extends Vue {
+  // Default values are set according to CGI Tartu's location :P
   public longitude = 26.741067622905167;
   public latitude = 58.36514538336391;
   public date = new Date();
@@ -153,46 +160,49 @@ export default class InputFields extends Vue {
   private marker!: Marker;
 
   public timezones = [
-    { name: "UTC-11", code: "-11" },
-    { name: "UTC-10", code: "-10" },
-    { name: "UTC-9:30", code: "-9.5" },
-    { name: "UTC-9", code: "-9" },
-    { name: "UTC-8", code: "-8" },
-    { name: "UTC-7", code: "-7" },
-    { name: "UTC-6", code: "-6" },
-    { name: "UTC-5", code: "-5" },
-    { name: "UTC-4", code: "-4" },
-    { name: "UTC-3:30", code: "-3.5" },
-    { name: "UTC-3", code: "-3" },
-    { name: "UTC-2", code: "-2" },
-    { name: "UTC-1", code: "-1" },
-    { name: "UTC+0", code: "+0" },
-    { name: "UTC+1", code: "+1" },
-    { name: "UTC+2", code: "+2" },
-    { name: "UTC+3", code: "+3" },
-    { name: "UTC+3:30", code: "+3.5" },
-    { name: "UTC+4", code: "+4" },
-    { name: "UTC+4:30", code: "+4.5" },
-    { name: "UTC+5", code: "+5" },
-    { name: "UTC+5:30", code: "+5.5" },
-    { name: "UTC+5:45", code: "+5.75" },
-    { name: "UTC+6", code: "+6" },
-    { name: "UTC+6:30", code: "+6.5" },
-    { name: "UTC+7", code: "+7" },
-    { name: "UTC+8", code: "+8" },
-    { name: "UTC+8:45", code: "+8.75" },
-    { name: "UTC+9", code: "+9" },
-    { name: "UTC+9:30", code: "+9.5" },
-    { name: "UTC+10", code: "+10" },
-    { name: "UTC+10:30", code: "+10.5" },
-    { name: "UTC+11", code: "+11" },
-    { name: "UTC+12", code: "+12" },
-    { name: "UTC+12:45", code: "+12.75" },
-    { name: "UTC+13", code: "+13" },
-    { name: "UTC+14", code: "+14" },
+    new Timezone("UTC-11", -11),
+    new Timezone("UTC-10", -10),
+    new Timezone("UTC-9:30", -9.5),
+    new Timezone("UTC-9", -9),
+    new Timezone("UTC-8", -8),
+    new Timezone("UTC-7", -7),
+    new Timezone("UTC-6", -6),
+    new Timezone("UTC-5", -5),
+    new Timezone("UTC-4", -4),
+    new Timezone("UTC-3:30", -3.5),
+    new Timezone("UTC-3", -3),
+    new Timezone("UTC-2", -2),
+    new Timezone("UTC-1", -1),
+    new Timezone("UTC+0", 0),
+    new Timezone("UTC+1", 1),
+    new Timezone("UTC+2", 2),
+    new Timezone("UTC+3", 3),
+    new Timezone("UTC+3:30", 3.5),
+    new Timezone("UTC+4", 4),
+    new Timezone("UTC+4:30", 4.5),
+    new Timezone("UTC+5", 5),
+    new Timezone("UTC+5:30", 5.5),
+    new Timezone("UTC+5:45", 5.75),
+    new Timezone("UTC+6", 6),
+    new Timezone("UTC+6:30", 6.5),
+    new Timezone("UTC+7", 7),
+    new Timezone("UTC+8", 8),
+    new Timezone("UTC+8:45", 8.75),
+    new Timezone("UTC+9", 9),
+    new Timezone("UTC+9:30", 9.5),
+    new Timezone("UTC+10", 10),
+    new Timezone("UTC+10:30", 10.5),
+    new Timezone("UTC+11", 11),
+    new Timezone("UTC+12", 12),
+    new Timezone("UTC+12:45", 12.75),
+    new Timezone("UTC+13", 13),
+    new Timezone("UTC+14", 14),
   ];
   public selectedTimezone = this.timezones[16];
 
+  /** If all important compononents (date, lat, lng) are present,
+   * then emits data to Home.vue for further processing.
+   */
   public calculate(): void {
     if (this.date && this.latitude && this.longitude)
       this.$emit(
@@ -201,21 +211,31 @@ export default class InputFields extends Vue {
         Number(this.longitude),
         this.date,
         this.enddate,
-        Number(this.selectedTimezone.code)
+        this.selectedTimezone
       );
   }
 
+  /**
+   * Updates marker location on map.
+   */
   public updateMap(): void {
     this.marker.setLatLng([this.latitude, this.longitude]);
     this.map.setView([this.latitude, this.longitude]);
   }
 
+  /**
+   * Takes lat and lng values from map according to user click.
+   */
   public onMapClick(e: LeafletMouseEvent): void {
     this.longitude = e.latlng.lng;
     this.latitude = e.latlng.lat;
     this.updateMap();
   }
 
+  /**
+   * Vue interface method. Gets called on component mount, which means each time component is rendered.
+   * Creates map instance and it's tileLayer and marker. Calls default calculation.
+   */
   mounted(): void {
     this.map = L.map("mapid").setView([this.latitude, this.longitude], 13);
 
@@ -226,6 +246,7 @@ export default class InputFields extends Vue {
 
     this.marker = L.marker([this.latitude, this.longitude], {
       icon: L.icon({
+        // No idea why assets do not work here. Had to use URL from web. Codesmell :(
         iconUrl: "http://leafletjs.com/examples/custom-icons/leaf-red.png",
         shadowUrl: "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
 

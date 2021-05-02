@@ -2,22 +2,30 @@
   <Card>
     <template #title> Sunrise/Sunset Calculator </template>
     <template #content>
-      <h3 id="disclaimer">
+      <h4 id="disclaimer">
         Disclaimer! This app uses sun angle estimations, therefore it may be off
         ±5 minutes.
-      </h3>
+      </h4>
 
       <div class="p-grid p-jc-evenly">
         <Card id="sunrise_card" class="p-md-2 p-col-12 p-shadow-14">
           <template #title> Sunrise </template>
           <template #content>
-            <h3>{{ displayTime(solarEvents[0].getSunrise + timezone) }}</h3>
+            <h3>
+              {{ displayTime(solarEvents[0].getSunrise + timezone.offset) }}
+              <br />
+              {{ timezone.name }}
+            </h3>
           </template>
         </Card>
         <Card id="sunset_card" class="p-md-2 p-col-12 p-shadow-14">
           <template #title> Sunset </template>
           <template #content>
-            <h3>{{ displayTime(solarEvents[0].getSunset + timezone) }}</h3>
+            <h3>
+              {{ displayTime(solarEvents[0].getSunset + timezone.offset) }}
+              <br />
+              {{ timezone.name }}
+            </h3>
           </template>
         </Card>
         <Card id="daylight_card" class="p-md-2 p-col-12 p-shadow-14">
@@ -42,9 +50,13 @@
 </template>
 
 <script lang="ts">
+// UI Components
 import Chart from "primevue/chart";
 import Card from "primevue/card";
 import { Options, Vue } from "vue-class-component";
+
+// TS Models
+import Timezone from "@/models/Timezone";
 import SolarEvent from "@/models/SolarEvent";
 import GraphData from "@/models/GraphData";
 import DataSet from "@/models/DataSet";
@@ -56,7 +68,7 @@ import DataSet from "@/models/DataSet";
   },
   props: {
     solarEvents: Array,
-    timezone: Number,
+    timezone: Timezone,
   },
 })
 export default class DaytimeView extends Vue {
@@ -125,5 +137,8 @@ export default class DaytimeView extends Vue {
 #sunset_card {
   background-color: #000c5c;
   color: #f4f5e5;
+}
+h3 {
+  margin: 0px;
 }
 </style>

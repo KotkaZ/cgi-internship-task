@@ -11,6 +11,8 @@
 
 <script lang="ts">
 import SolarEvent from "@/models/SolarEvent";
+import Timezone from "@/models/Timezone";
+
 import { Options, Vue } from "vue-class-component";
 import DaytimeView from "@/components/DaytimeView.vue"; // @ is an alias to /src
 import InputFields from "@/components/InputFields.vue"; // @ is an alias to /src
@@ -23,7 +25,7 @@ import InputFields from "@/components/InputFields.vue"; // @ is an alias to /src
 })
 export default class Home extends Vue {
   public solarEvents: Array<SolarEvent> = [new SolarEvent(0, 0, new Date())];
-  public timezone = 0;
+  public timezone: Timezone = new Timezone("UTC+0", 0);
 
   /**
    * Saves solarEvents from inputFields emit.
@@ -33,9 +35,9 @@ export default class Home extends Vue {
     longitude: number,
     date: Date,
     enddate: Date,
-    timeoffset: number
+    timezone: Timezone
   ): void {
-    this.timezone = timeoffset;
+    this.timezone = timezone;
     this.solarEvents = [new SolarEvent(latitude, longitude, new Date(date))];
 
     if (enddate) {
