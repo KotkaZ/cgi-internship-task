@@ -23,7 +23,7 @@ This project is very easy to install and deploy with Docker containers.
 First, make sure your Docker engine is up and running.
 
 ```sh
-cd goto-and-play
+cd cgi-internship-task
 docker-compose up
 ```
 
